@@ -26,11 +26,11 @@ class Dropdown extends Component{
     })
   }
 
-  selectItem(title, id, stateKey){
+  selectItem(title, id, stateKey , code){
     this.setState({
       headerTitle: title,
       listOpen: false
-    }, this.props.resetThenSet(id, stateKey , title))
+    }, this.props.resetThenSet(id, stateKey , title, code))
   }
 
   toggleList(e){
@@ -51,7 +51,7 @@ class Dropdown extends Component{
         </div>
         {listOpen && <ul className="dd-list" onClick={e => e.stopPropagation()}>
           {list.map((item)=> (
-            <li className="dd-list-item" key={item.id} onClick={() => this.selectItem(item.title, item.id, item.key)}><Flag flag={item.flag}/>{item.title} </li>
+            <li className="dd-list-item" key={item.id} onClick={() => this.selectItem(item.title, item.id, item.key , item.code)}><Flag flag={item.flag}/>{item.title} </li>
           ))}
         </ul>}
       </div>
