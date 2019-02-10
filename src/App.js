@@ -1,25 +1,76 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Dropdown from './Dropdown';
 
 class App extends Component {
+    constructor(){
+    super()
+    this.state = {
+      selectedCOuntry : '',
+      country: [
+        {
+          id: 0,
+          title: 'US',
+          selected: false,
+          key: 'country',
+          flag:'https://einfon.com/wp-content/uploads/2017/05/Flag-Of-USA.jpg'
+        },
+        {
+          id: 1,
+          title: 'UK',
+          selected: false,
+          key: 'country',
+          flag:'https://einfon.com/wp-content/uploads/2017/05/Flag-Of-USA.jpg'
+        },
+        {
+          id: 2,
+          title: 'IND',
+          selected: false,
+          key: 'country',
+          flag:'https://einfon.com/wp-content/uploads/2017/05/Flag-Of-USA.jpg'
+        },
+        {
+          id: 3,
+          title: 'NZ',
+          selected: false,
+          key: 'country',
+          flag:'https://einfon.com/wp-content/uploads/2017/05/Flag-Of-USA.jpg'
+        },
+        {
+          id: 4,
+          title: 'AUS',
+          selected: false,
+          key: 'country',
+          flag:'https://einfon.com/wp-content/uploads/2017/05/Flag-Of-USA.jpg'
+        }
+      ]
+    }
+  
+  }
+
+
+  resetThenSet = (id, key, title) => {
+    let temp = JSON.parse(JSON.stringify(this.state[key]))
+    temp.forEach(item => item.selected = false);
+    temp[id].selected = true;
+    this.setState({
+      [key]: temp,
+      selectedCOuntry: title
+    })
+  }
+
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+
+        <div className="wrapper">
+          <Dropdown
+            title="Select your country"
+            list={this.state.country}
+            resetThenSet={this.resetThenSet}
+          />
+        </div>
+
+        <p> Selected country {this.state.selectedCOuntry}</p>
       </div>
     );
   }
