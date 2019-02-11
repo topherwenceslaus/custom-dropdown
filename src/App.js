@@ -1,38 +1,35 @@
 import React, { Component } from 'react';
 import Dropdown from './Dropdown';
-import countries from './Country'
+import AllCountries from './Country'
 import Utils from './Utils'
-import CountryCodes from './CountryCodes'
 
 class App extends Component {
     constructor(){
     super()
+    this.countries = AllCountries.getCountries()
+    this.countryCodes = {};
     this.state = {
       telephoneNumber:'',
-      selectedCOuntry : '',
-      countryCode:'',
-      country: countries,
-      countryDialCodes :CountryCodes
+      selectedCountry : '',
+      countryCode:''
     }
   }
 
-  resetState = ()=>{
-    let temp = JSON.parse(JSON.stringify(this.state.country))
-    temp.forEach(item => item.selected = false);
-    return temp
+  addCountryCodes(){
+    let countryCodes= this.countryCodes
+      this.countries.forEach(country => {
+        countryCodes[country.dialCode] = [country.iso2 , country.name]
+      });
   }
 
-  resetThenSet = (id, key, title , code) => {
-    let temp = this.resetState()
-    temp.map((country)=>{
-        if(country.title ===title){
-          country.selected = true
-        }
-    })
+  componentDidMount(){
+      this.addCountryCodes()
+  }
+
+  setCountry = (countryCode) => {
     this.setState({
-      country: temp,
-      selectedCOuntry: title,
-      countryCode:code
+      selectedCountry: this.countryCodes[countryCode][1],
+      countryCode:countryCode
     })
   }
 
@@ -48,11 +45,8 @@ class App extends Component {
   getDialCode = number => {
     let dialCode = '';
 
-    // only interested in international numbers (starting with a plus)
     if (number.charAt(0) === '+') {
       let numericChars = '';
-
-      // iterate over chars
       for (let i = 0, max = number.length; i < max; i++) {
         const c = number.charAt(i);
 
@@ -60,7 +54,7 @@ class App extends Component {
         if (Utils.isNumeric(c)) {
           numericChars += c;
           // if current numericChars make a valid dial code
-          if (this.state.countryDialCodes[numericChars]) {
+          if (this.countryCodes[numericChars]) {
             // store the actual raw string (useful for matching later)
             dialCode = number.substr(0, i + 1);
           }
@@ -71,29 +65,15 @@ class App extends Component {
         }
       }
     }
-
     return dialCode;
   }
 
   setFlag = (countryCode)=>{
-      let temp = this.resetState(), title= ''
-     temp.map((country)=>{
-        if(country.code ==countryCode){
-          country.selected = true
-          title = country.title
-        }
-    })
-
-    this.setState({
-      country: temp,
-      selectedCOuntry: title,
-      countryCode:countryCode
-    })
+    //Directly we can invoke setCountry - Timebeing handled here
+    this.setCountry(countryCode)
   }
 
   updateFlagFromNumber = (number) => {
-
-    // try and extract valid dial code from input
     const dialCode = this.getDialCode(number);
     let countryCode = null;
 
@@ -114,16 +94,15 @@ class App extends Component {
   }
 
   render() {
-
     const {countryCode , telephoneNumber } = this.state
     return (
       <div className="App">
 
         <div className="wrapper">
           <Dropdown
-            title= {this.state.selectedCOuntry || "Select your country"}
-            list={this.state.country}
-            resetThenSet={this.resetThenSet}
+            title= {this.state.selectedCountry || "Select your country"}
+            list={this.countries}
+            setCountry={this.setCountry}
           />
           <input type="text" value={telephoneNumber} onChange={(e)=>this.numberChange(e)}/>
         </div>

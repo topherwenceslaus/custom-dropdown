@@ -1,42 +1,22 @@
-let countries= [{
-  id: 0,
-  title: 'US',
-  code: '1',
-  selected: false,
-  key: 'country',
-  flag:'https://einfon.com/wp-content/uploads/2017/05/Flag-Of-USA.jpg'
-},
-{
-  id: 1,
-  title: 'UK',
-  code: '44',
-  selected: false,
-  key: 'country',
-  flag:'https://einfon.com/wp-content/uploads/2017/05/Flag-Of-USA.jpg'
-},
-{
-  id: 2,
-  title: 'IND',
-  code: '91',
-  selected: false,
-  key: 'country',
-  flag:'https://einfon.com/wp-content/uploads/2017/05/Flag-Of-USA.jpg'
-},
-{
-  id: 3,
-  title: 'NZ',
-  selected: false,
-  code: '33',
-  key: 'country',
-  flag:'https://einfon.com/wp-content/uploads/2017/05/Flag-Of-USA.jpg'
-},
-{
-  id: 4,
-  title: 'AUS',
-  selected: false,
-  code: '88',
-  key: 'country',
-  flag:'https://einfon.com/wp-content/uploads/2017/05/Flag-Of-USA.jpg'
-}]
+const defaultCountriesData = [
+  ['United Kingdom', 'gb', '44', 0],
+  ['United States', 'us', '1', 0],
+  ['India', 'in', '91'],
+  ['Australia', 'au', '61', 0],
+  ['New Zealand', 'nz', '64']
+]
 
-export default countries
+const  getCountries = ()  => {
+  return defaultCountriesData.map(country => ({
+    name: country[0],
+    iso2: country[1],
+    dialCode: country[2],
+    priority: country[3] || 0,
+    areaCodes: country[4] || null,
+  }));
+}
+
+const AllCountries = {
+  getCountries
+};
+export default AllCountries
