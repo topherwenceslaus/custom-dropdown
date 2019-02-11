@@ -3,10 +3,10 @@ import Flag from './Flag'
 import './Global.css'
 class Dropdown extends Component{
   constructor(props){
+    console.log(props)
     super(props)
     this.state = {
-      listOpen: false,
-      headerTitle: this.props.title
+      listOpen: false
     }
     this.close = this.close.bind(this)
   }
@@ -28,7 +28,6 @@ class Dropdown extends Component{
 
   selectItem(title, id, stateKey , code){
     this.setState({
-      headerTitle: title,
       listOpen: false
     }, this.props.resetThenSet(id, stateKey , title, code))
   }
@@ -41,12 +40,12 @@ class Dropdown extends Component{
   }
 
   render(){
-    const{list} = this.props
-    const{listOpen, headerTitle} = this.state
+    const{list,title} = this.props
+    const{listOpen} = this.state
     return(
       <div className="dd-wrapper">
         <div className="dd-header" onClick={(e) => this.toggleList(e)}>
-          <div className="dd-header-title">{headerTitle}</div>
+          <div className="dd-header-title">{title}</div>
           +
         </div>
         {listOpen && <ul className="dd-list" onClick={e => e.stopPropagation()}>
