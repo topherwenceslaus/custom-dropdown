@@ -30,7 +30,7 @@ class Dropdown extends Component{
     const countryCode = e.target.id
     this.setState({
       listOpen: false
-    }, this.props.setCountry(countryCode))
+    }, this.props.setFlag(countryCode))
   }
 
   toggleList(e){
@@ -51,7 +51,7 @@ class Dropdown extends Component{
         </div>
         {listOpen && <ul className="dd-list" onClick={e => e.stopPropagation()}>
           {list.map((item)=> (
-            <li className="dd-list-item" key={item.dialCode} id={item.dialCode} onClick={this.selectItem}><Flag/>{item.name} </li>
+            <li className="dd-list-item" key={item.dialCode} id={item.dialCode} onClick={this.selectItem}><Flag country={item.name}/>{item.name} </li>
           ))}
         </ul>}
       </div>

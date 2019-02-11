@@ -26,10 +26,12 @@ class App extends Component {
       this.addCountryCodes()
   }
 
-  setCountry = (countryCode) => {
+  setFlag = (countryCode) => {
+    const newNumber = this.updateDialCode(countryCode)
     this.setState({
       selectedCountry: this.countryCodes[countryCode][1],
-      countryCode:countryCode
+      countryCode:countryCode,
+      telephoneNumber : newNumber
     })
   }
 
@@ -68,10 +70,30 @@ class App extends Component {
     return dialCode;
   }
 
-  setFlag = (countryCode)=>{
-    //Directly we can invoke setCountry - Timebeing handled here
-    this.setCountry(countryCode)
+  updateDialCode = (newDialCode) => {
+    console.log(newDialCode,"newDialCode")
+    const currentNumber = this.state.telephoneNumber;
+
+    if (!newDialCode) {
+      return currentNumber;
+    }
+    let newNumber = currentNumber;
+    newDialCode = `+${newDialCode}`;
+
+    if (currentNumber.charAt(0) === '+') {
+      const prevDialCode = this.getDialCode(currentNumber);
+
+      if (prevDialCode) {
+        newNumber = currentNumber.replace(prevDialCode, newDialCode);
+      } else {
+        newNumber = newDialCode;
+      }
+    } 
+    return newNumber
   }
+
+
+
 
   updateFlagFromNumber = (number) => {
     const dialCode = this.getDialCode(number);
@@ -102,7 +124,7 @@ class App extends Component {
           <Dropdown
             title= {this.state.selectedCountry || "Select your country"}
             list={this.countries}
-            setCountry={this.setCountry}
+            setFlag={this.setFlag}
           />
           <input type="text" value={telephoneNumber} onChange={(e)=>this.numberChange(e)}/>
         </div>
