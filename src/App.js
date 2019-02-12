@@ -4,10 +4,11 @@ import AllCountries from './Country'
 import Utils from './Utils'
 
 class App extends Component {
-    constructor(){
-    super()
+    constructor(props){
+    super(props)
     this.countries = AllCountries.getCountries()
     this.countryCodes = {};
+    this.defaultCountry = props.defaultCountry || null
     this.state = {
       telephoneNumber:'',
       selectedCountry : '',
@@ -24,6 +25,9 @@ class App extends Component {
 
   componentDidMount(){
       this.addCountryCodes()
+      if(this.defaultCountry){
+          this.setFlag(this.defaultCountry)
+      }
   }
 
   setFlag = (countryCode) => {
