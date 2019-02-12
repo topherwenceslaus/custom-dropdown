@@ -50,7 +50,6 @@ class App extends Component {
 
   getDialCode = number => {
     let dialCode = '';
-
     if (number.charAt(0) === '+') {
       let numericChars = '';
       for (let i = 0, max = number.length; i < max; i++) {
@@ -75,9 +74,8 @@ class App extends Component {
   }
 
   updateDialCode = (newDialCode) => {
-    console.log(newDialCode,"newDialCode")
     const currentNumber = this.state.telephoneNumber;
-
+console.log(currentNumber,"currentNumber")
     if (!newDialCode) {
       return currentNumber;
     }
@@ -85,14 +83,17 @@ class App extends Component {
     newDialCode = `+${newDialCode}`;
 
     if (currentNumber.charAt(0) === '+') {
-      const prevDialCode = this.getDialCode(currentNumber);
 
+      const prevDialCode = this.getDialCode(currentNumber);  
       if (prevDialCode) {
         newNumber = currentNumber.replace(prevDialCode, newDialCode);
       } else {
         newNumber = newDialCode;
       }
     } 
+    else{
+      return `${newDialCode}${newNumber}`
+    }
     return newNumber
   }
 
@@ -100,10 +101,9 @@ class App extends Component {
 
 
   updateFlagFromNumber = (number) => {
+    console.log(number)
     const dialCode = this.getDialCode(number);
     let countryCode = null;
-
-
     if (dialCode) {
       const alreadySelected =
         this.state.countryCode &&
