@@ -43,9 +43,9 @@ class App extends Component {
     let {value}  = e.target
     this.setState({
       telephoneNumber : value
-    })
+    },this.updateFlagFromNumber(value))
 
-    this.updateFlagFromNumber(value)
+    
   }
 
   getDialCode = number => {
@@ -75,7 +75,6 @@ class App extends Component {
 
   updateDialCode = (newDialCode) => {
     const currentNumber = this.state.telephoneNumber;
-console.log(currentNumber,"currentNumber")
     if (!newDialCode) {
       return currentNumber;
     }
@@ -101,20 +100,19 @@ console.log(currentNumber,"currentNumber")
 
 
   updateFlagFromNumber = (number) => {
-    console.log(number)
     const dialCode = this.getDialCode(number);
+   
     let countryCode = null;
     if (dialCode) {
       const alreadySelected =
         this.state.countryCode &&
         this.state.countryCode === Utils.getNumeric(dialCode)
-
+       
         if(!alreadySelected){
           countryCode = Utils.getNumeric(dialCode)
         }
     }
     if (countryCode !== null) {
-
       this.setFlag(countryCode);
     }
   }
