@@ -12,7 +12,8 @@ class App extends Component {
     this.state = {
       telephoneNumber:'',
       selectedCountry : '',
-      countryCode:''
+      countryCode:'',
+      isValidNumber: false
     }
   }
 
@@ -30,12 +31,14 @@ class App extends Component {
       }
   }
 
-  setFlag = (countryCode) => {
+  setFlag = (countryCode,isValidNumber = true) => {
     const newNumber = this.updateDialCode(countryCode)
+
     this.setState({
       selectedCountry: this.countryCodes[countryCode][1],
       countryCode:countryCode,
-      telephoneNumber : newNumber
+      telephoneNumber : newNumber,
+      isValidNumber:isValidNumber
     })
   }
 
@@ -44,8 +47,6 @@ class App extends Component {
     this.setState({
       telephoneNumber : value
     },this.updateFlagFromNumber(value))
-
-    
   }
 
   getDialCode = number => {
@@ -82,7 +83,6 @@ class App extends Component {
     newDialCode = `+${newDialCode}`;
 
     if (currentNumber.charAt(0) === '+') {
-
       const prevDialCode = this.getDialCode(currentNumber);  
       if (prevDialCode) {
         newNumber = currentNumber.replace(prevDialCode, newDialCode);
@@ -101,7 +101,7 @@ class App extends Component {
 
   updateFlagFromNumber = (number) => {
     const dialCode = this.getDialCode(number);
-   
+    let isValidNumber = false
     let countryCode = null;
     if (dialCode) {
       const alreadySelected =
@@ -111,14 +111,21 @@ class App extends Component {
         if(!alreadySelected){
           countryCode = Utils.getNumeric(dialCode)
         }
+
+        isValidNumber = true
     }
     if (countryCode !== null) {
-      this.setFlag(countryCode);
+      this.setFlag(countryCode,isValidNumber);
+    }
+    else{
+      this.setState({
+        isValidNumber
+      })
     }
   }
 
   render() {
-    const {countryCode , telephoneNumber } = this.state
+    const { telephoneNumber } = this.state
     return (
       <div className="App">
 
@@ -131,7 +138,7 @@ class App extends Component {
           <input type="text" value={telephoneNumber} onChange={(e)=>this.numberChange(e)}/>
         </div>
 
-        <p> Selected country {`+${countryCode}`} {telephoneNumber}</p>
+        <p> {this.state.isValidNumber ? "valid dialcode" : "not  valid code"}</p>
       </div>
     );
   }
