@@ -93,11 +93,13 @@ class App extends Component {
     else{
       return `${newDialCode}${newNumber}`
     }
+    console.log(newNumber)
     return newNumber
   }
 
-
-
+  handlePaste = (e)=>{
+      e.preventDefault()
+  }
 
   updateFlagFromNumber = (number) => {
     const dialCode = this.getDialCode(number);
@@ -135,7 +137,7 @@ class App extends Component {
             list={this.countries}
             setFlag={this.setFlag}
           />
-          <input type="text" value={telephoneNumber} onChange={(e)=>this.numberChange(e)}/>
+          <input type="text" onPaste={this.handlePaste} value={telephoneNumber} onChange={(e)=>this.numberChange(e)}/>
         </div>
 
         <p> {this.state.isValidNumber ? "valid dialcode" : "not  valid code"}</p>
